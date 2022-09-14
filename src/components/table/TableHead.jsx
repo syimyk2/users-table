@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { TableHeadItem } from './TableHeadItem'
 
-export const TableHead = ({columnInfo})=>{
-    const [isVisbleSelect, setVisibleSelect] = useState(false)
-    const showColumnVariantsHandler =(selectedItem)=>{
-        alert(selectedItem)
-    }
+export const TableHead = ()=>{
+    const {columnInfo} = useSelector(state=>state.contact)
 
-    return(<>{columnInfo?.map((item)=><th onClick={()=>showColumnVariantsHandler(item.key)} key={item.key}>{item.heading}</th>)}</>)
+    return(
+        <>
+        {columnInfo.slice(0, 3).map((item)=><TableHeadItem key={item.id} thItem={item}/>)}
+        </>
+
+    )
 }

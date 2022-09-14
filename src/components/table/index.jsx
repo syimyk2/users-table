@@ -8,11 +8,11 @@ export const Contacts = ({dataTable, columnInfo}) => {
     <StyledTable>
         <thead>
             <tr>
-            <TableHead columnInfo={columnInfo}/>
+            <TableHead />
             </tr>
         </thead>
         <tbody>
-            {dataTable.map((tableItem)=><TableRowItem key={tableItem.id} tableItem={tableItem}  columnInfo={columnInfo} />)}
+            {dataTable.map((tableItem)=><TableRowItem key={tableItem.id} tableItem={tableItem}   />)}
           
         </tbody>
     </StyledTable>

@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { fetchApi } from '../api/fetchApi'
+import { columnInfo } from '../utils/helpers/data'
 
 const initialState = {
    contacts: JSON.parse(localStorage.getItem('users')) || [],
-   contact: {},
+   columnInfo: columnInfo,
    isLoading: false,
    errorMessage: null,
-   searchValue: '',
+   selectedValues: null,
    fitleredContacts: [],
 }
 export const getContacts = createAsyncThunk(
@@ -28,26 +29,17 @@ const contactSlice = createSlice({
    name: 'contacts',
    initialState,
    reducers: {
-      getOneContact(state, action) {
-         state.contact = action.payload
+      getSelectedValues(state, action) {
+         const {selected,defaultHeading} =action.payload
+         state.selectedValues = selected
+
+        const selectedItemIndex = state.columnInfo.findIndex((el)=>el.key===defaultHeading)
+        state.columnInfo.splice(selectedItemIndex,1, {key: selected.value, heading: selected.label, id: Math.random().toString()} )
+
       },
-      deleteContact(state, action) {
-         state.contacts = state.contacts.filter(
-            (el) => el.id !== action.payload
-         )
-      },
-      searchContact(state, action) {
-         state.searchValue = action.payload
-      },
-      editContact(state, action) {
-         state.contacts = state.contacts.map((el) => {
-            if (el.id === action.payload.id) {
-               return { ...action.payload }
-            }
-            return el
-         })
-         state.contact = action.payload
-      },
+      clearSelectedHeading(state, action){
+         state.selectedValues = null
+      }
    },
    extraReducers: {
       [getContacts.pending]: (state) => {
